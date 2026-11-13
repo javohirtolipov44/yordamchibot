@@ -7,7 +7,7 @@ router = Router()
 @router.message(CommandStart(), F.chat.type == "private")
 async def start_private(message: Message):
     text = (
-        "👋 <b>Assalomu alaykum!</b>\n\n"
+        "👋 <b>Assalomu alaykum! JAVOHIR</b>\n\n"
         "Men guruhlarni tozalovchi va nazorat qiluvchi yordamchi botman.\n\n"
         "<b>Mening vazifalarim:</b>\n"
         "• 🗑 Guruhga a'zo qo'shildi / chiqdi xabarlarini avtomatik o'chirish\n"
