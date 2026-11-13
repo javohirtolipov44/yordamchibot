@@ -22,7 +22,7 @@ logging.getLogger("asyncio").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
-ADMIN_ID = 652840346
+ADMIN_ID = 1179777869
 
 
 async def startup_answer(bot: Bot):
