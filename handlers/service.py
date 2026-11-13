@@ -24,17 +24,17 @@ async def delete_service_messages(message: Message, bot: Bot):
             left_user = message.left_chat_member.full_name if message.left_chat_member else "Noma'lum"
             logger.info(f"Chiqdi xabari o'chirildi: {left_user} (Guruh: {message.chat.title})")
     except Exception as e:
-        logger.warning(
-            f"Servis xabarini o'chirib bo'lmadi! Chat: {message.chat.title} (ID: {message.chat.id}, Type: {message.chat.type}). "
+        logger.error(
+            f"Servis xabarini o'chirib bo'lmadi! Chat: {message.chat.title} (ID: {message.chat.id}). "
             f"Xatolik: {e}"
         )
         try:
             bot_member = await bot.get_chat_member(message.chat.id, bot.id)
-            logger.warning(
+            logger.error(
                 f"Botning guruhdagi statusi: {bot_member.status}. "
                 f"can_delete_messages: {getattr(bot_member, 'can_delete_messages', None)}"
             )
         except Exception as check_err:
-            logger.warning(f"Bot huquqini tekshirishda xatolik: {check_err}")
+            logger.error(f"Bot huquqini tekshirishda xatolik: {check_err}")
 
 

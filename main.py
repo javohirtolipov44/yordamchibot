@@ -8,15 +8,35 @@ from aiogram.enums import ParseMode
 import config
 from handlers import register_handlers
 
-# Loglarni sozlash
+# Loglarni sozlash - faqat xatoliklar (ERROR) chiqadi
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.ERROR,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout)
     ]
 )
+# Aiogram va asyncio kutubxonalari loglarini ham faqat ERROR darajasiga o'rnatish
+logging.getLogger("aiogram").setLevel(logging.ERROR)
+logging.getLogger("asyncio").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
+
+
+ADMIN_ID = 652840346
+
+
+async def startup_answer(bot: Bot):
+    try:
+        await bot.send_message(ADMIN_ID, "Bot ishga tushdi✅")
+    except Exception as e:
+        logger.error(f"Startup xabarini yuborib bo'lmadi: {e}")
+
+
+async def shutdown_answer(bot: Bot):
+    try:
+        await bot.send_message(ADMIN_ID, "Bot to'xtadi❌")
+    except Exception as e:
+        logger.error(f"Shutdown xabarini yuborib bo'lmadi: {e}")
 
 
 async def main():
@@ -37,8 +57,10 @@ async def main():
     # Handlerlarni ro'yxatdan o'tkazish
     register_handlers(dp)
 
-    logger.info("Bot muvaffaqiyatli ishga tushdi! Guruhdagi xabarlarni kuzatish boshlandi.")
-    
+    # Bot yoqilganda va o'chganda xabar yuborish hodisalari (Startup & Shutdown)
+    dp.startup.register(startup_answer)
+    dp.shutdown.register(shutdown_answer)
+
     # Bot o'chirilgan vaqtda yig'ilib qolgan eski xabarlarni o'tkazib yuborish
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
@@ -48,5 +70,5 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.info("Bot to'xtatildi.")
+        pass
 

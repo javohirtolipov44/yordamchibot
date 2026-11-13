@@ -79,5 +79,5 @@ async def filter_spam_messages(message: Message, bot: Bot):
         await warning_msg.delete()
 
     except Exception as e:
-        logger.warning(f"Reklamani o'chirishda xatolik: {e}")
+        logger.error(f"Reklamani o'chirishda xatolik: {e}")
 
