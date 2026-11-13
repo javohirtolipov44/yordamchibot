@@ -34,7 +34,7 @@ nano .env
 ```
 Ichiga tokenni yozing:
 ```env
-BOT_TOKEN=8835777094:AAHd-_332nvZorfrnayfgJgH2lDckPgLUX4
+BOT_TOKEN=
 ```
 
 ### 4. Botni 24/7 rejimda avtomatik ishlatish (Systemd)
