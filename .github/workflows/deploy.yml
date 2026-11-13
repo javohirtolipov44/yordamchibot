@@ -1,0 +1,38 @@
+name: Deploy Telegram Bot to Ubuntu (without Docker)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Ubuntu via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            set -e
+            echo "🚀 Serverga ulanildi, deploy boshlandi..."
+
+            # Loyiha papkasiga o'tish
+            cd ~/yordamchibot
+
+            # Yangi kodni yuklab olish
+            git pull origin $(git branch --show-current)
+
+            # Virtual muhitni faollashtirish va yangi kutubxonalarni o'rnatish
+            source venv/bin/activate
+            pip install -r requirements.txt
+
+            # Bot xizmatini (systemd) qayta ishga tushirish
+            sudo systemctl restart yordamchibot
+
+            echo "✅ Deploy muvaffaqiyatli yakunlandi! Bot qayta ishga tushirildi."
